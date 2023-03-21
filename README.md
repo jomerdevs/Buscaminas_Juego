@@ -4,7 +4,7 @@
 <br>
 🟣 Algunas casilas tienen un número, este número indica las minas que suman todas las casillas vecinas.
 <br>
-🟣 Así, si una casilla tiene el número 3, significa que d elas ocho casillas que hay alrededor (si no es en una esquina o borde del tablero) hay 3 con minas y 5 sin minas.
+🟣 Así, si una casilla tiene el número 3, significa que de las ocho casillas que hay alrededor (si no es en una esquina o borde del tablero) hay 3 con minas y 5 sin minas.
 <br>
 🟣 Si se descubre una casilla sin número(en blanco) indica que ninguna de las casillas vecinas tiene mina.
 <br>
