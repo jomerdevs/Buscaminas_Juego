@@ -28,4 +28,4 @@
 <br>
 🟢 <i>Todas las validaciones anteriormente mencionadas se realizan desde el código, pero es bueno que el jugador tenga las reglas claras.</i>
 <br>
-<h2> 🚀 ESPERO QUE LES GUSTE ✅... 🚀 jomerdev 🚀</h2>
+<h2> 🚀 ESPERO QUE LES GUSTE ✅.... 🚀 jomerdev 🚀</h2>
