@@ -15,6 +15,8 @@ int elegirColumnas(int nivel);
 int elegirMinas(int nivel);
 void iniciarTablero(int fila, int columna,char space[MAX][MAX]);
 void colocarMinas(int fila, int columna, char space[MAX][MAX], int minas);
+void colocarNumeros(int fila, int columna, char space[MAX][MAX]);
+void imprimirTablero(int jugada_fila, int jugada_columna, char space[MAX][MAX, char space2[MAX][MAX], int fila, int columna);
 //_________________________
 
 int main()
@@ -22,6 +24,7 @@ int main()
     setlocale(LC_ALL,"spanish"); //función para poder mostrar ñ y acentos
 
     int nivel, fila, columna, minas;
+    int jugada_fila, jugada_columna;
     char space[MAX][MAX], space2[MAX][MAX];
 
     bienvenida();
@@ -32,6 +35,25 @@ int main()
     minas = elegirMinas(nivel);
     iniciarTablero(fila, columna, space);
     colocarMinas(fila, columna, space2, minas);
+    colocarNumeros(fila, columna, space2);
+
+    while (1) {
+        cout << "Ingrese la fila y la columna que desea voltear: ";
+        cin >> jugada_fila >> jugada_columna;
+
+        imprimirTablero(jugada_fila, jugada_columna, space, space2, fila, columna);
+
+        cout << endl;
+        for (int i = 1; i < fila + 1; i++)
+        {
+            for (int j = 1; j < columna + 1; j++)
+            {
+                cout << space2[i][j];
+            }
+            cout << endl;
+        }
+    }
+    
     
 }
 
@@ -160,12 +182,52 @@ void colocarMinas(int fila, int columna, char space[MAX][MAX], int minas)
 
     while(1) {
         pfila = 1+rand() % fila; // aleatorio de numero de filas, empezando desde 1, porque hay una columna 0 que no se muestra
-        pcol = 1 + rand() % columna; // aleatorio de numero de columnas, empezando desde 1, porque hay una columna 0 que no se muestra
+        pcol = 1+rand() % columna; // aleatorio de numero de columnas, empezando desde 1, porque hay una columna 0 que no se muestra
 
         if (space[pfila][pcol] == '0') {
-            space[pfila][pcol] == 'X';
+            space[pfila][pcol] = 'X';
             minas--;
         }
         if (minas == 0) break; // si ya no quedan minas por colocar salimos del bucle
+    }
+}
+
+void colocarNumeros(int fila, int columna, char space[MAX][MAX])
+{    
+    int numero; // variable para ir determinando el número de minas encontradas alrededor de la casilla actual
+
+    for (int i = 1; i < fila + 1; i++)
+    {
+        for (int j = 1; j < columna + 1; j++)
+        {
+            if (space[i][j] == '0') {
+                numero = 0;
+                // verificamos si en alguna de las casillas alrededor hay minas
+                if (space[i - 1][j] == 'X')numero++;
+                if (space[i - 1][j - 1] == 'X')numero++;
+                if (space[i - 1][j + 1] == 'X')numero++;
+                if (space[i][j - 1] == 'X')numero++;
+                if (space[i][j + 1] == 'X')numero++;
+                if (space[i + 1][j] == 'X')numero++;
+                if (space[i + 1][j - 1] == 'X')numero++;
+                if (space[i + 1][j + 1] == 'X')numero++;
+
+                if (numero == 0)space[i][j] = ' ';
+                else space[i][j] = numero+'0'; // esto practicamente lo convierte a char
+            }
+        }
+    }
+}
+
+void imprimirTablero(int jugada_fila, int jugada_columna, char space[MAX][MAX, char space2[MAX][MAX], int fila, int columna)
+{
+    space[jugada_fila][jugada_columna] = space2[jugada_fila][jugada_columna];
+    for (int i = 1; i < fila + 1; i++)
+    {
+        for (int j = 1; j < columna + 1; j++)
+        {
+            cout << space[i][j];
+        }
+        cout << endl;
     }
 }
