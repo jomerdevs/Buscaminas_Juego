@@ -16,7 +16,8 @@ int elegirMinas(int nivel);
 void iniciarTablero(int fila, int columna,char space[MAX][MAX]);
 void colocarMinas(int fila, int columna, char space[MAX][MAX], int minas);
 void colocarNumeros(int fila, int columna, char space[MAX][MAX]);
-void imprimirTablero(int jugada_fila, int jugada_columna, char space[MAX][MAX, char space2[MAX][MAX], int fila, int columna);
+void imprimirTablero(int jugada_fila, int jugada_columna, char space[MAX][MAX], char space2[MAX][MAX], int fila, int columna);
+int VerificarGanador(int fila, int columna, char space[MAX][MAX], int minas);
 //_________________________
 
 int main()
@@ -25,6 +26,7 @@ int main()
 
     int nivel, fila, columna, minas;
     int jugada_fila, jugada_columna;
+    int estado;
     char space[MAX][MAX], space2[MAX][MAX];
 
     bienvenida();
@@ -38,23 +40,29 @@ int main()
     colocarNumeros(fila, columna, space2);
 
     while (1) {
-        cout << "Ingrese la fila y la columna que desea voltear: ";
+        cout << "\nIngrese la fila y la columna que desea voltear: ";
         cin >> jugada_fila >> jugada_columna;
-
-        imprimirTablero(jugada_fila, jugada_columna, space, space2, fila, columna);
-
         cout << endl;
-        for (int i = 1; i < fila + 1; i++)
-        {
-            for (int j = 1; j < columna + 1; j++)
-            {
-                cout << space2[i][j];
+        if (jugada_fila > 0 && jugada_fila < fila + 1 && jugada_columna > 0 && jugada_columna < columna + 1) {
+
+            imprimirTablero(jugada_fila, jugada_columna, space, space2, fila, columna);
+
+            estado = VerificarGanador(fila, columna, space, minas);
+
+            if (estado == 1) {
+                cout << "\nHas ganado el juego!!" << endl;
+                break;
             }
-            cout << endl;
+            else if (estado == 2) {
+                cout << "\nHas perdido el juego :(" << endl;
+                break;
+            }
         }
+        else cout << "\nValores incorrectos" << endl << endl;
+
     }
     
-    
+    return EXIT_SUCCESS;
 }
 
 // ----- IMPLEMENTACIONES DE FUNCIONES -----
@@ -219,7 +227,7 @@ void colocarNumeros(int fila, int columna, char space[MAX][MAX])
     }
 }
 
-void imprimirTablero(int jugada_fila, int jugada_columna, char space[MAX][MAX, char space2[MAX][MAX], int fila, int columna)
+void imprimirTablero(int jugada_fila, int jugada_columna, char space[MAX][MAX], char space2[MAX][MAX], int fila, int columna)
 {
     space[jugada_fila][jugada_columna] = space2[jugada_fila][jugada_columna];
     for (int i = 1; i < fila + 1; i++)
@@ -230,4 +238,24 @@ void imprimirTablero(int jugada_fila, int jugada_columna, char space[MAX][MAX, c
         }
         cout << endl;
     }
+}
+
+int VerificarGanador(int fila, int columna, char space[MAX][MAX], int minas)
+{
+    int casillasFaltantes = 0, cantidadMinas = 0;
+    int estado = 0;
+
+    for (int i = 1; i < fila + 1 ; i++)
+    {
+        for (int j = 1; j < columna + 1; j++)
+        {
+            if (space[i][j] == 'X') cantidadMinas++;
+            else if (space[i][j] == '0') casillasFaltantes++;
+        }
+    }
+
+    if (cantidadMinas != 0) estado = 2; // si voltió una mina perdió
+    else if (casillasFaltantes == minas) estado = 1; // si las casillas que faltan por voltear es igual a la cantidad de minas en el tablero, entonces ganó
+
+    return estado;
 }
